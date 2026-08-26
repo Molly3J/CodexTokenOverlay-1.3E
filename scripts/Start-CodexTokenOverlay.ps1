@@ -22,7 +22,7 @@ if ($PortEnd -lt $PortStart) {
 
 $result = [ordered]@{
     StartedAt = (Get-Date).ToString('o')
-    Version = '1.4.0'
+    Version = '0.1.1'
     CodexPackage = $null
     CodexVersion = $null
     CodexExecutable = $null
@@ -192,7 +192,7 @@ try {
 
     if ($settingsChanged) {
         if ($settingsExisted -and -not $result.SettingsBackup) {
-            $settingsBackup = "$SettingsPath.pre-1.4.0-$((Get-Date).ToString('yyyyMMdd-HHmmss')).bak"
+            $settingsBackup = "$SettingsPath.pre-0.1.1-$((Get-Date).ToString('yyyyMMdd-HHmmss')).bak"
             Copy-Item -LiteralPath $SettingsPath -Destination $settingsBackup -Force
             $result.SettingsBackup = $settingsBackup
         }

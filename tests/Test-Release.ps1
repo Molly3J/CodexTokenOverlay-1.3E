@@ -23,8 +23,8 @@ $portableProject = Get-Content -LiteralPath (Join-Path $root 'src\CodexTokenOver
 $machinePathPattern = 'C:' + '\\Users\\'
 $desktopHostPattern = 'DESKTOP-' + '[A-Z0-9]{5,}'
 
-Assert-True ($assemblyInfo -match 'AssemblyFileVersion\("1\.4\.0\.0"\)') 'Assembly file version is not 1.4.0.0.'
-Assert-True ($assemblyInfo -match 'AssemblyInformationalVersion\("1\.4\.0"\)') 'Assembly informational version is not 1.4.0.'
+Assert-True ($assemblyInfo -match 'AssemblyFileVersion\("0\.1\.1\.0"\)') 'Assembly file version is not 0.1.1.0.'
+Assert-True ($assemblyInfo -match 'AssemblyInformationalVersion\("0\.1\.1"\)') 'Assembly informational version is not 0.1.1.'
 Assert-True ($assemblyInfo -notmatch $machinePathPattern) 'Assembly metadata contains a machine-specific user path.'
 Assert-True ($settingsSource -match 'DisplayBackend = DisplayBackendKind\.ExperimentalCdp') 'Fresh-user default is not the in-page backend.'
 Assert-True ($settingsSource -match 'CdpPort = 19222') 'Fresh-user CDP port is not the dedicated port 19222.'
@@ -58,7 +58,7 @@ foreach ($file in $textFiles) {
 }
 
 $payload = Join-Path $root "dist\win-$Architecture\publish\CodexTokenOverlay.exe"
-$setup = Join-Path $root "dist\release\CodexTokenOverlay-1.4.0-windows-$Architecture-Setup.exe"
+$setup = Join-Path $root "dist\release\CodexTokenOverlay-0.1.1-windows-$Architecture-Setup.exe"
 Assert-True (Test-Path -LiteralPath $payload -PathType Leaf) "Published $Architecture payload is missing."
 if (-not $SkipInstaller) {
     Assert-True (Test-Path -LiteralPath $setup -PathType Leaf) "The $Architecture setup executable is missing."
@@ -67,8 +67,8 @@ Assert-True (-not (Get-ChildItem -LiteralPath (Split-Path -Parent $payload) -Fil
 
 if (Test-Path -LiteralPath $payload -PathType Leaf) {
     $item = Get-Item -LiteralPath $payload
-    Assert-True ($item.VersionInfo.FileVersion -eq '1.4.0.0') "Payload FileVersion is $($item.VersionInfo.FileVersion)."
-    Assert-True ($item.VersionInfo.ProductVersion -eq '1.4.0') "Payload ProductVersion is $($item.VersionInfo.ProductVersion)."
+    Assert-True ($item.VersionInfo.FileVersion -eq '0.1.1.0') "Payload FileVersion is $($item.VersionInfo.FileVersion)."
+    Assert-True ($item.VersionInfo.ProductVersion -eq '0.1.1') "Payload ProductVersion is $($item.VersionInfo.ProductVersion)."
     $binaryText = [Text.Encoding]::Latin1.GetString([IO.File]::ReadAllBytes($payload))
     Assert-True ($binaryText -notmatch $machinePathPattern -and $binaryText -notmatch $desktopHostPattern -and $binaryText -notmatch 'CodexTokenOverlay\.pdb') 'Payload contains a machine identity or PDB path.'
 

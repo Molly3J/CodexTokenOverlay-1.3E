@@ -5,8 +5,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$version = '1.4.0'
-$numericVersion = '1.4.0.0'
+$version = '0.1.1'
+$numericVersion = '0.1.1.0'
 $root = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $dist = [IO.Path]::GetFullPath((Join-Path $root 'dist'))
 $release = [IO.Path]::GetFullPath((Join-Path $dist 'release'))

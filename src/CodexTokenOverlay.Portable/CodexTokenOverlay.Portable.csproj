@@ -4,9 +4,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>CodexTokenOverlay</AssemblyName>
     <RootNamespace>CodexTokenOverlay</RootNamespace>
-    <Version>1.4.0</Version>
-    <FileVersion>1.4.0.0</FileVersion>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
+    <Version>0.1.1</Version>
+    <FileVersion>0.1.1.0</FileVersion>
+    <AssemblyVersion>0.1.1.0</AssemblyVersion>
     <Description>Cross-platform external token overlay for Codex sessions.</Description>
     <Nullable>annotations</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>

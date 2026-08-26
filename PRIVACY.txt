@@ -1,4 +1,4 @@
-CodexTokenOverlay 1.4.0 - Privacy Notice
+CodexTokenOverlay 0.1.1 - Privacy Notice
 
 CodexTokenOverlay runs locally on Windows, macOS, and Linux. It reads local Codex session JSONL files from CODEX_HOME/sessions or the default .codex/sessions directory to calculate the values shown in the status overlay.
 

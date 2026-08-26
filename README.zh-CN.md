@@ -1,4 +1,4 @@
-# CodexTokenOverlay 1.4.0
+# CodexTokenOverlay 0.1.1
 
 面向 Windows、macOS 和 Linux 的非官方 Codex Token 状态栏。程序读取本机 Codex 会话 JSONL，显示输入、输出、缓存命中、上下文占用和墙钟速率估算。
 
@@ -6,8 +6,8 @@
 
 | 系统 | 安装包 | 架构 | 显示方式 |
 | --- | --- | --- | --- |
-| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x64-Setup.exe` | x64 | 页面内 CDP 或外部悬浮窗 |
-| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x86-Setup.exe` | x86 | 页面内 CDP 或外部悬浮窗 |
+| Windows 10/11 | `CodexTokenOverlay-0.1.1-windows-x64-Setup.exe` | x64 | 页面内 CDP 或外部悬浮窗 |
+| Windows 10/11 | `CodexTokenOverlay-0.1.1-windows-x86-Setup.exe` | x86 | 页面内 CDP 或外部悬浮窗 |
 | macOS 12+ | `.dmg` 或 `.zip` | Intel x64、Apple Silicon arm64 | 置顶外部悬浮窗 |
 | Linux 桌面 | `.AppImage`、`.deb`、`.rpm` 或 `.tar.gz` | x86_64 | 置顶外部悬浮窗 |
 
@@ -32,11 +32,11 @@ CDP 必须只绑定到 `127.0.0.1`。不要创建公网防火墙放行规则，�
 ### Linux
 
 ```bash
-chmod +x CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
-./CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
+chmod +x CodexTokenOverlay-0.1.1-linux-x86_64.AppImage
+./CodexTokenOverlay-0.1.1-linux-x86_64.AppImage
 
-sudo apt install ./codex-token-overlay_1.4.0_amd64.deb
-sudo dnf install ./codex-token-overlay-1.4.0.x86_64.rpm
+sudo apt install ./codex-token-overlay_0.1.1_amd64.deb
+sudo dnf install ./codex-token-overlay-0.1.1.x86_64.rpm
 ```
 
 默认读取 `$CODEX_HOME/sessions`；未设置 `CODEX_HOME` 时读取 `~/.codex/sessions`。可用 `--sessions /路径/sessions` 指定其他目录。

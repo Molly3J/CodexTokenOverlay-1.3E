@@ -3,10 +3,10 @@
   #define MyAppArch "x64"
 #endif
 #ifndef MyAppDisplayVersion
-  #define MyAppDisplayVersion "1.4.0"
+  #define MyAppDisplayVersion "0.1.1"
 #endif
 #ifndef MyAppNumericVersion
-  #define MyAppNumericVersion "1.4.0.0"
+  #define MyAppNumericVersion "0.1.1.0"
 #endif
 #define MyAppExeName "CodexTokenOverlay.exe"
 

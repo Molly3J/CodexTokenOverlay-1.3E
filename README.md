@@ -1,4 +1,4 @@
-# CodexTokenOverlay 1.4.0
+# CodexTokenOverlay 0.1.1
 
 An unofficial token status overlay for Codex sessions on Windows, macOS, and Linux. It reads local Codex JSONL session files and displays input, output, cache, context, and wall-clock rate estimates.
 
@@ -8,8 +8,8 @@ An unofficial token status overlay for Codex sessions on Windows, macOS, and Lin
 
 | Platform | Package | Architecture | UI mode |
 | --- | --- | --- | --- |
-| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x64-Setup.exe` | x64 | In-page CDP or external overlay |
-| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x86-Setup.exe` | x86 | In-page CDP or external overlay |
+| Windows 10/11 | `CodexTokenOverlay-0.1.1-windows-x64-Setup.exe` | x64 | In-page CDP or external overlay |
+| Windows 10/11 | `CodexTokenOverlay-0.1.1-windows-x86-Setup.exe` | x86 | In-page CDP or external overlay |
 | macOS 12+ | `.dmg` or `.zip` | Intel x64, Apple Silicon arm64 | External always-on-top overlay |
 | Linux desktop | `.AppImage`, `.deb`, `.rpm`, or `.tar.gz` | x86_64 | External always-on-top overlay |
 
@@ -36,11 +36,11 @@ In-page status-bar injection has not been verified on physical Mac hardware. Vol
 Use one of the following:
 
 ```bash
-chmod +x CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
-./CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
+chmod +x CodexTokenOverlay-0.1.1-linux-x86_64.AppImage
+./CodexTokenOverlay-0.1.1-linux-x86_64.AppImage
 
-sudo apt install ./codex-token-overlay_1.4.0_amd64.deb
-sudo dnf install ./codex-token-overlay-1.4.0.x86_64.rpm
+sudo apt install ./codex-token-overlay_0.1.1_amd64.deb
+sudo dnf install ./codex-token-overlay-0.1.1.x86_64.rpm
 ```
 
 The overlay reads `$CODEX_HOME/sessions`, or `~/.codex/sessions` when `CODEX_HOME` is not set. Pass `--sessions /path/to/sessions` to override it.

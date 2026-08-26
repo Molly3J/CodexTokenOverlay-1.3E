@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-version="${1:-1.4.0}"
+version="${1:-0.1.1}"
 rid="${2:?usage: package-macos.sh VERSION osx-x64|osx-arm64}"
 case "$rid" in
   osx-x64) arch="x64" ;;

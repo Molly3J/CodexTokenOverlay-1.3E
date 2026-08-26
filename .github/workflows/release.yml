@@ -47,7 +47,7 @@ jobs:
         run: ./tests/Test-Portable.ps1
       - name: Build macOS package
         shell: bash
-        run: ./scripts/package-macos.sh 1.4.0 ${{ matrix.rid }}
+        run: ./scripts/package-macos.sh 0.1.1 ${{ matrix.rid }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: macos-${{ matrix.rid }}
@@ -71,7 +71,7 @@ jobs:
         run: ./tests/Test-Portable.ps1
       - name: Build Linux packages
         shell: bash
-        run: ./scripts/package-linux.sh 1.4.0
+        run: ./scripts/package-linux.sh 0.1.1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: linux-packages
@@ -103,7 +103,7 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" dist/release/* \
             --repo "$GITHUB_REPOSITORY" \
-            --title "CodexTokenOverlay 1.4.0" \
-            --notes-file RELEASE_NOTES_1.4.0.md \
+            --title "CodexTokenOverlay 0.1.1" \
+            --notes-file RELEASE_NOTES_0.1.1.md \
             --prerelease \
             --verify-tag

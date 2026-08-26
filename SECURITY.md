@@ -2,7 +2,7 @@
 
 ## Supported version
 
-Only the latest release is supported. Cross-platform 1.4.0 packages are prerelease software until promoted after broader platform testing.
+Only the latest release is supported. Cross-platform 0.1.1 packages are prerelease software until promoted after broader platform testing.
 
 ## Reporting a vulnerability
 
