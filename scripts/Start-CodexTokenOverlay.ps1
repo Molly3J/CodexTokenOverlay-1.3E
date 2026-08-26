@@ -1,9 +1,9 @@
 param(
     [ValidateRange(1024, 65535)]
-    [int]$PortStart = 9222,
+    [int]$PortStart = 19222,
 
     [ValidateRange(1024, 65535)]
-    [int]$PortEnd = 9232,
+    [int]$PortEnd = 19222,
 
     [string]$OverlayPath = "$env:LOCALAPPDATA\Programs\CodexTokenOverlay\CodexTokenOverlay.exe",
 
@@ -174,7 +174,9 @@ try {
     }
 
     $codexProcesses = Get-CodexProcesses -PackageRoot $packageRoot
-    $preferredPort = if ($settings.CdpPort -is [int] -and $settings.CdpPort -ge 1024 -and $settings.CdpPort -le 65535) {
+    $preferredPort = if ($settings.CdpPort -is [int] -and
+        $settings.CdpPort -ge $PortStart -and
+        $settings.CdpPort -le $PortEnd) {
         [int]$settings.CdpPort
     }
     else {

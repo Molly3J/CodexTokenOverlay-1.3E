@@ -21,6 +21,10 @@ Windows retains the original host-window attachment and experimental in-page CDP
 
 Run the installer matching the operating-system architecture. The optional `CODEX(tokenoverlay)` shortcut launches Codex and the overlay together.
 
+The experimental in-page status bar requires Codex to expose CDP on `127.0.0.1:19222`. This loopback port must be available and listening while in-page mode is active; otherwise the overlay cannot attach to the Codex page. The installed `CODEX(tokenoverlay)` shortcut configures the required `--remote-debugging-port=19222` launch flag automatically and migrates older `9222` settings to the dedicated port.
+
+Keep CDP bound to `127.0.0.1` only. Do not create a public firewall rule or expose port `19222` to a LAN or the internet. The dedicated high port avoids collisions with common `9222`-range debugging endpoints and tools that scan them.
+
 ### macOS
 
 Open the DMG and copy `CodexTokenOverlay.app` to Applications. The release is ad-hoc signed but not Apple-notarized; on first launch, Control-click the app and choose **Open** if Gatekeeper asks for confirmation.
@@ -43,7 +47,7 @@ The overlay reads `$CODEX_HOME/sessions`, or `~/.codex/sessions` when `CODEX_HOM
 
 ## Security and privacy
 
-The application has no analytics or telemetry upload feature. Windows in-page mode opens a loopback Electron CDP endpoint that other processes in the same user session may be able to access. macOS and Linux packages do not enable or require CDP. See `SECURITY.md` and `PRIVACY.txt`.
+The application has no analytics or telemetry upload feature. Windows in-page mode opens the required loopback Electron CDP endpoint at `127.0.0.1:19222`; other processes in the same user session may be able to access it. macOS and Linux packages do not enable or require CDP. See `SECURITY.md` and `PRIVACY.txt`.
 
 `RATE` is a wall-clock estimate that includes reasoning, scheduling, tool use, and waits. It is not raw decoder throughput.
 

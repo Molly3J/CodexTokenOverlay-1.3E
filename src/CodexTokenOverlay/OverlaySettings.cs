@@ -89,7 +89,7 @@ internal sealed class OverlaySettings
 			MainAttachment = ManualAttachmentRules.DefaultMainAttachment,
 			OverlayScalePercent = 100,
 			DisplayBackend = DisplayBackendKind.ExperimentalCdp,
-			CdpPort = 9222,
+			CdpPort = 19222,
 			CdpExpectedCodexVersion = null
 		};
 	}
@@ -282,7 +282,11 @@ internal sealed class OverlaySettings
 
 	private static int SanitizeCdpPort(int? value)
 	{
-		return value is >= 1024 and <= 65535 ? value.Value : 9222;
+		if (value is >= 9222 and <= 9232)
+		{
+			return 19222;
+		}
+		return value is >= 1024 and <= 65535 ? value.Value : 19222;
 	}
 
 	private static string? SanitizeCodexVersion(string? value)

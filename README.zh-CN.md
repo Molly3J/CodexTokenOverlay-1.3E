@@ -19,6 +19,10 @@ Windows 版保留原有窗口吸附和实验性页面内 CDP 状态栏。macOS/L
 
 运行与系统架构匹配的 Setup。安装向导可选创建 `CODEX(tokenoverlay)` 快捷方式，用于同时启动 Codex 和 Overlay。
 
+实验性页面内状态栏要求 Codex 在 `127.0.0.1:19222` 提供 CDP。使用页面内模式期间，该本机回环端口必须可用并保持监听，否则 Overlay 无法附着到 Codex 页面。安装生成的 `CODEX(tokenoverlay)` 快捷方式会自动加入必需的 `--remote-debugging-port=19222` 启动参数，并把旧版 `9222` 设置迁移到这个专用端口。
+
+CDP 必须只绑定到 `127.0.0.1`。不要创建公网防火墙放行规则，也不要把 `19222` 暴露给局域网或互联网。使用这个专用高位端口可以避开常见的 `9222` 调试端点及扫描这些端点的其他工具。
+
 ### macOS
 
 打开 DMG，把 `CodexTokenOverlay.app` 拖入“应用程序”。当前版本采用临时签名、没有 Apple 公证；首次启动若被 Gatekeeper 拦截，请按住 Control 点击应用并选择“打开”。
@@ -40,7 +44,7 @@ sudo dnf install ./codex-token-overlay-1.4.0.x86_64.rpm
 ## 安全与隐私
 
 - 程序没有分析或遥测上传功能。
-- Windows 页面内模式会打开本机 Electron CDP 回环端口，同一用户会话中的其他进程可能访问该端口。
+- Windows 页面内模式必须打开 `127.0.0.1:19222` 本机 Electron CDP 回环端口，同一用户会话中的其他进程可能访问该端口。
 - macOS/Linux 版不启用、也不依赖 CDP。
 - `RATE` 是包括推理、调度、工具调用和等待在内的墙钟估算，不是纯模型解码速度。
 - 当前 Windows 包没有商业 Authenticode 签名，macOS 包没有 Apple 公证；安装前请用 `SHA256SUMS.txt` 核对哈希。

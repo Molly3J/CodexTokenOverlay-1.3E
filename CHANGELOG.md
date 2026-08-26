@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Moved the Windows in-page CDP default from the commonly scanned `9222` range to dedicated loopback port `19222`.
+- Added automatic migration of older persisted CDP settings and release checks that lock the launcher and overlay defaults together.
+- Documented that `127.0.0.1:19222` must be available for in-page mode and must never be exposed to a LAN or the internet.
+
 ## 1.4.0 - 2026-08-26
 
 - Added a cross-platform Avalonia external overlay for macOS and Linux.

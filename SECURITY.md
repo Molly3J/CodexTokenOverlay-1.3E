@@ -10,7 +10,9 @@ Report security issues privately to the repository owner. Do not include Codex s
 
 ## CDP boundary
 
-The experimental in-page backend starts the Microsoft Store Codex app with a loopback Chrome DevTools Protocol endpoint. The launcher selects an available port, checks that the listener belongs to an `OpenAI.Codex` package process, and verifies an `app://` page before the overlay uses it. CDP still has no application-level authentication; another process in the same Windows user session may be able to connect.
+The experimental in-page backend starts the Microsoft Store Codex app with a loopback Chrome DevTools Protocol endpoint at `127.0.0.1:19222`. That port must remain available and listening while in-page mode is active. The launcher migrates older `9222` settings to the dedicated port, checks that the listener belongs to an `OpenAI.Codex` package process, and verifies an `app://` page before the overlay uses it.
+
+CDP has no application-level authentication; another process in the same Windows user session may be able to connect. Keep it bound to loopback only. Never expose port `19222` through a public firewall rule, port forwarding, a LAN listener, or an internet-facing interface.
 
 Use the stable external overlay backend if this risk is unacceptable. The project never modifies signed Microsoft Store package files.
 
