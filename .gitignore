@@ -1,0 +1,13 @@
+bin/
+obj/
+dist/
+.vs/
+*.user
+*.suo
+*.pdb
+*.log
+*.bak
+launch-report.json
+settings.json
+model-context-source-cache.json
+

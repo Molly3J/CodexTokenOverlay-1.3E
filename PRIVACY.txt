@@ -1,0 +1,12 @@
+CodexTokenOverlay 1.3E - Privacy Notice
+
+CodexTokenOverlay runs locally on Windows. It reads local Codex session JSONL files from CODEX_HOME\sessions or the default .codex\sessions directory to calculate the values shown in the status row.
+
+The application does not include an analytics or telemetry upload feature. It writes local settings, launch reports, diagnostics, model-context cache data, and timestamped settings backups under %LOCALAPPDATA%\CodexTokenOverlay.
+
+The experimental in-page backend opens a loopback Electron Chrome DevTools Protocol (CDP) endpoint. Other processes running in the same Windows user session may be able to access that endpoint. Do not enable in-page mode on a managed or high-risk computer unless you accept this local-debugging exposure.
+
+Codex itself continues to use the network according to the user's OpenAI/Codex configuration. This project does not change those account or network policies.
+
+Uninstalling the application removes installed program files and shortcuts. Per-user settings and diagnostics are retained so upgrades and reinstallations can preserve preferences; users may remove %LOCALAPPDATA%\CodexTokenOverlay manually after uninstalling.
+
