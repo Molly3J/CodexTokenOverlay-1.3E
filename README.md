@@ -25,6 +25,8 @@ Run the installer matching the operating-system architecture. The optional `CODE
 
 Open the DMG and copy `CodexTokenOverlay.app` to Applications. The release is ad-hoc signed but not Apple-notarized; on first launch, Control-click the app and choose **Open** if Gatekeeper asks for confirmation.
 
+In-page status-bar injection has not been verified on physical Mac hardware. Volunteers can use the Chinese [macOS CDP feasibility test prompt](docs/macos-cdp-injection-test-prompt.zh-CN.md); it runs only a temporary probe and does not mean the current package supports in-page mode.
+
 ### Linux
 
 Use one of the following:

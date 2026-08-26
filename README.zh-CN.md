@@ -23,6 +23,8 @@ Windows 版保留原有窗口吸附和实验性页面内 CDP 状态栏。macOS/L
 
 打开 DMG，把 `CodexTokenOverlay.app` 拖入“应用程序”。当前版本采用临时签名、没有 Apple 公证；首次启动若被 Gatekeeper 拦截，请按住 Control 点击应用并选择“打开”。
 
+页面内状态栏尚未在实体 Mac 上验证。愿意协助测试的用户可使用[macOS CDP 可行性测试提示词](docs/macos-cdp-injection-test-prompt.zh-CN.md)；该流程只做临时探针，不代表当前安装包已支持页面内模式。
+
 ### Linux
 
 ```bash
