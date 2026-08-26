@@ -43,8 +43,8 @@ cp -a "$publish/." "$appdir/usr/bin/"
 cp "$root/packaging/linux/AppRun" "$appdir/AppRun"
 sed 's/Exec=codex-token-overlay/Exec=CodexTokenOverlay/' \
   "$root/packaging/linux/CodexTokenOverlay.desktop" > "$appdir/CodexTokenOverlay.desktop"
-cp "$root/assets/CodexTokenOverlay.png" "$appdir/CodexTokenOverlay.png"
-ln -s CodexTokenOverlay.png "$appdir/.DirIcon"
+cp "$root/assets/CodexTokenOverlay.png" "$appdir/codex-token-overlay.png"
+ln -s codex-token-overlay.png "$appdir/.DirIcon"
 chmod +x "$appdir/AppRun" "$appdir/usr/bin/CodexTokenOverlay"
 
 appimagetool="${APPIMAGETOOL:-$stage/appimagetool-x86_64.AppImage}"
