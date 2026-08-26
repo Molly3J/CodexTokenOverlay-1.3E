@@ -1,40 +1,70 @@
-# CodexTokenOverlay 1.3E
+# CodexTokenOverlay 1.4.0
 
-An unofficial Windows token status overlay for the Codex desktop experience. It reads local Codex session JSONL files and displays input, output, cache, context, and wall-clock rate estimates. The experimental in-page backend mounts the status row below the Codex composer and safely falls back to the external overlay when unavailable.
+An unofficial token status overlay for Codex sessions on Windows, macOS, and Linux. It reads local Codex JSONL session files and displays input, output, cache, context, and wall-clock rate estimates.
+
+中文说明：[README.zh-CN.md](README.zh-CN.md)
+
+## Downloads
+
+| Platform | Package | Architecture | UI mode |
+| --- | --- | --- | --- |
+| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x64-Setup.exe` | x64 | In-page CDP or external overlay |
+| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x86-Setup.exe` | x86 | In-page CDP or external overlay |
+| macOS 12+ | `.dmg` or `.zip` | Intel x64, Apple Silicon arm64 | External always-on-top overlay |
+| Linux desktop | `.AppImage`, `.deb`, `.rpm`, or `.tar.gz` | x86_64 | External always-on-top overlay |
+
+Windows retains the original host-window attachment and experimental in-page CDP integration. macOS and Linux use the new portable external overlay because Windows UI Automation, Store-package startup, and `user32.dll` APIs do not exist on those systems.
 
 ## Install
 
-1. Install and sign in to the latest Microsoft Store Codex/ChatGPT desktop app.
-2. Run `CodexTokenOverlay-1.3E-Setup.exe`.
-3. Choose whether the installer should create the desktop shortcut `CODEX(tokenoverlay)`.
-4. Leave **Launch Codex + Token Overlay** selected at the end of setup.
+### Windows
 
-The first launch creates a per-user in-page configuration. Codex may be restarted to enable a verified loopback CDP endpoint.
+Run the installer matching the operating-system architecture. The optional `CODEX(tokenoverlay)` shortcut launches Codex and the overlay together.
 
-## Requirements
+### macOS
 
-- Windows 10/11, x64-compatible.
-- Microsoft Store package `OpenAI.Codex`.
-- Windows PowerShell 5.1.
-- Codex sessions under `%CODEX_HOME%\sessions` or `%USERPROFILE%\.codex\sessions`.
+Open the DMG and copy `CodexTokenOverlay.app` to Applications. The release is ad-hoc signed but not Apple-notarized; on first launch, Control-click the app and choose **Open** if Gatekeeper asks for confirmation.
+
+### Linux
+
+Use one of the following:
+
+```bash
+chmod +x CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
+./CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
+
+sudo apt install ./codex-token-overlay_1.4.0_amd64.deb
+sudo dnf install ./codex-token-overlay-1.4.0.x86_64.rpm
+```
+
+The overlay reads `$CODEX_HOME/sessions`, or `~/.codex/sessions` when `CODEX_HOME` is not set. Pass `--sessions /path/to/sessions` to override it.
 
 ## Security and privacy
 
-The overlay does not modify Store package files and has no telemetry upload feature. In-page mode opens a loopback Electron CDP endpoint that other processes in the same Windows user session may be able to access. See `SECURITY.md` and `PRIVACY.txt` before enabling it on managed or high-risk machines.
+The application has no analytics or telemetry upload feature. Windows in-page mode opens a loopback Electron CDP endpoint that other processes in the same user session may be able to access. macOS and Linux packages do not enable or require CDP. See `SECURITY.md` and `PRIVACY.txt`.
 
 `RATE` is a wall-clock estimate that includes reasoning, scheduling, tool use, and waits. It is not raw decoder throughput.
 
+All release packages are currently unsigned by a commercial Windows certificate and are not Apple-notarized. Verify downloads against `SHA256SUMS.txt`.
+
 ## Build
 
+Windows:
+
 ```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Build-Release.ps1
-pwsh -NoProfile -ExecutionPolicy Bypass -File .\tests\Test-Release.ps1
+pwsh -NoProfile -File .\scripts\Build-Windows.ps1 -Architecture all
+pwsh -NoProfile -File .\tests\Test-Release.ps1 -Architecture x86
+pwsh -NoProfile -File .\tests\Test-Release.ps1 -Architecture x64
 ```
 
-.NET SDK 10 and Inno Setup 6 are required. Build output is written to the ignored `dist` directory.
+Portable parser/UI:
 
-This private test build is not Authenticode-signed. Verify the installer against the private release's `SHA256SUMS.txt` before running it; Windows may show a SmartScreen origin warning.
+```powershell
+pwsh -NoProfile -File .\tests\Test-Portable.ps1
+```
+
+GitHub Actions builds macOS DMG/ZIP and Linux AppImage/DEB/RPM/TAR packages on their native runners when a version tag is pushed.
 
 ## Unofficial project
 
-This project is not an official OpenAI product and is not endorsed or maintained by OpenAI. Codex, ChatGPT, OpenAI, and their icons belong to their respective owners. The icon is used only to identify the local Codex launch shortcut.
+This project is not an official OpenAI product and is not endorsed or maintained by OpenAI. Codex, ChatGPT, OpenAI, and their icons belong to their respective owners.

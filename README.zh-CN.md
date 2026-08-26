@@ -1,56 +1,61 @@
-# CodexTokenOverlay 1.3E
+# CodexTokenOverlay 1.4.0
 
-面向 Windows Codex 桌面应用的非官方 Token 状态栏。它读取本机 Codex 会话 JSONL，显示输入、输出、缓存命中、上下文占用和墙钟速率估算，并可把状态栏挂载到 Codex 输入框下方。
+面向 Windows、macOS 和 Linux 的非官方 Codex Token 状态栏。程序读取本机 Codex 会话 JSONL，显示输入、输出、缓存命中、上下文占用和墙钟速率估算。
 
-## 一键安装
+## 下载选择
 
-1. 确认已从 Microsoft Store 安装并登录最新版 Codex/ChatGPT 桌面应用。
-2. 运行 `CodexTokenOverlay-1.3E-Setup.exe`。
-3. 在安装向导中选择是否创建桌面快捷方式 `CODEX(tokenoverlay)`。
-4. 保持“立即启动 Codex + Token Overlay”勾选，完成安装。
+| 系统 | 安装包 | 架构 | 显示方式 |
+| --- | --- | --- | --- |
+| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x64-Setup.exe` | x64 | 页面内 CDP 或外部悬浮窗 |
+| Windows 10/11 | `CodexTokenOverlay-1.4.0-windows-x86-Setup.exe` | x86 | 页面内 CDP 或外部悬浮窗 |
+| macOS 12+ | `.dmg` 或 `.zip` | Intel x64、Apple Silicon arm64 | 置顶外部悬浮窗 |
+| Linux 桌面 | `.AppImage`、`.deb`、`.rpm` 或 `.tar.gz` | x86_64 | 置顶外部悬浮窗 |
 
-首次启动会为当前用户创建页面内状态栏配置，并在必要时重新启动 Codex 以打开本机 CDP 调试端口。若页面内挂载失败，Overlay 会回退到外部悬浮模式。
+Windows 版保留原有窗口吸附和实验性页面内 CDP 状态栏。macOS/Linux 没有 Windows UI Automation、Store 包启动器和 `user32.dll`，因此使用新的跨平台外部悬浮窗；Token 解析和指标语义保持一致。
 
-## 系统要求
+## 安装
 
-- Windows 10/11 x64 或支持 x64 应用的 Windows 设备。
-- Microsoft Store 包 `OpenAI.Codex`。
-- PowerShell 5.1、允许当前用户运行安装目录中的本地脚本。
-- Codex 会话目录：`%CODEX_HOME%\sessions`，未设置 `CODEX_HOME` 时使用 `%USERPROFILE%\.codex\sessions`。
+### Windows
 
-## 快捷方式
+运行与系统架构匹配的 Setup。安装向导可选创建 `CODEX(tokenoverlay)` 快捷方式，用于同时启动 Codex 和 Overlay。
 
-安装向导提供可选任务：
+### macOS
 
-- 名称：`CODEX(tokenoverlay)`
-- 图标：Codex 图标
-- 作用：启动或复用 Codex 的本机 CDP 端口，并启动 Token Overlay
+打开 DMG，把 `CodexTokenOverlay.app` 拖入“应用程序”。当前版本采用临时签名、没有 Apple 公证；首次启动若被 Gatekeeper 拦截，请按住 Control 点击应用并选择“打开”。
 
-开始菜单始终保留同名入口，桌面快捷方式由用户选择。
+### Linux
+
+```bash
+chmod +x CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
+./CodexTokenOverlay-1.4.0-linux-x86_64.AppImage
+
+sudo apt install ./codex-token-overlay_1.4.0_amd64.deb
+sudo dnf install ./codex-token-overlay-1.4.0.x86_64.rpm
+```
+
+默认读取 `$CODEX_HOME/sessions`；未设置 `CODEX_HOME` 时读取 `~/.codex/sessions`。可用 `--sessions /路径/sessions` 指定其他目录。
 
 ## 安全与隐私
 
-- 本程序不会修改 Microsoft Store 中的 Codex 文件。
-- 页面内模式会在回环地址打开 Electron CDP 端口。同一 Windows 用户会话中的其他本地进程可能访问该端口。
-- 启动器只接受由 `OpenAI.Codex` 包进程持有的监听端口，并验证 `app://` 页面目标。
-- Token 数据来自本机 Codex 会话日志；程序不提供遥测上传功能。
-- 详细说明见 `PRIVACY.txt` 和 `SECURITY.md`。
+- 程序没有分析或遥测上传功能。
+- Windows 页面内模式会打开本机 Electron CDP 回环端口，同一用户会话中的其他进程可能访问该端口。
+- macOS/Linux 版不启用、也不依赖 CDP。
+- `RATE` 是包括推理、调度、工具调用和等待在内的墙钟估算，不是纯模型解码速度。
+- 当前 Windows 包没有商业 Authenticode 签名，macOS 包没有 Apple 公证；安装前请用 `SHA256SUMS.txt` 核对哈希。
 
-## 指标语义
+详细边界见 `PRIVACY.txt` 和 `SECURITY.md`。
 
-`RATE` 是输出 Token 增量除以墙钟时间的估算，包含推理、调度、工具调用和等待时间；它不是纯模型解码吞吐率。
-
-## 构建
+## 本地构建
 
 ```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Build-Release.ps1
-pwsh -NoProfile -ExecutionPolicy Bypass -File .\tests\Test-Release.ps1
+pwsh -NoProfile -File .\scripts\Build-Windows.ps1 -Architecture all
+pwsh -NoProfile -File .\tests\Test-Release.ps1 -Architecture x86
+pwsh -NoProfile -File .\tests\Test-Release.ps1 -Architecture x64
+pwsh -NoProfile -File .\tests\Test-Portable.ps1
 ```
 
-需要 .NET SDK 10 和 Inno Setup 6。构建产物写入 `dist`，该目录不提交 Git。
-
-当前私人测试版未使用商业代码签名证书。安装前请从私有 Release 的 `SHA256SUMS.txt` 核对安装包哈希；Windows 可能显示 SmartScreen 来源提示。
+推送版本标签后，GitHub Actions 会在对应原生 Runner 上生成 Windows 安装器、macOS DMG/ZIP 和 Linux AppImage/DEB/RPM/TAR。
 
 ## 非官方声明
 
-本项目不是 OpenAI 官方产品，也不受 OpenAI 认可或维护。Codex、ChatGPT、OpenAI 名称及图标属于其各自权利人；图标仅用于识别本机已安装的 Codex 启动入口。
+本项目不是 OpenAI 官方产品，也不受 OpenAI 认可或维护。Codex、ChatGPT、OpenAI 名称及图标属于其各自权利人。

@@ -1,0 +1,109 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Install Inno Setup
+        shell: powershell
+        run: choco install innosetup --yes --no-progress
+      - name: Build and test Windows installers
+        shell: pwsh
+        run: |
+          ./scripts/Build-Windows.ps1 -Architecture all
+          ./tests/Test-Release.ps1 -Architecture x86
+          ./tests/Test-Release.ps1 -Architecture x64
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-installers
+          path: dist/release/*.exe
+          if-no-files-found: error
+
+  macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        rid: [osx-x64, osx-arm64]
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Test portable parser
+        shell: pwsh
+        run: ./tests/Test-Portable.ps1
+      - name: Build macOS package
+        shell: bash
+        run: ./scripts/package-macos.sh 1.4.0 ${{ matrix.rid }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: macos-${{ matrix.rid }}
+          path: |
+            dist/release/*.dmg
+            dist/release/*.zip
+          if-no-files-found: error
+
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Install RPM packaging tools
+        shell: bash
+        run: sudo apt-get update && sudo apt-get install -y rpm
+      - name: Test portable parser
+        shell: pwsh
+        run: ./tests/Test-Portable.ps1
+      - name: Build Linux packages
+        shell: bash
+        run: ./scripts/package-linux.sh 1.4.0
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: linux-packages
+          path: |
+            dist/release/*.AppImage
+            dist/release/*.deb
+            dist/release/*.rpm
+            dist/release/*.tar.gz
+          if-no-files-found: error
+
+  publish:
+    needs: [windows, macos, linux]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          path: dist/release
+          merge-multiple: true
+      - name: Generate SHA-256 manifest
+        shell: bash
+        working-directory: dist/release
+        run: |
+          find . -maxdepth 1 -type f ! -name SHA256SUMS.txt -printf '%f\n' | LC_ALL=C sort | xargs sha256sum > SHA256SUMS.txt
+      - name: Publish GitHub prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/release/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "CodexTokenOverlay 1.4.0" \
+            --notes-file RELEASE_NOTES_1.4.0.md \
+            --prerelease \
+            --verify-tag

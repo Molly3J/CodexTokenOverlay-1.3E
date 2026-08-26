@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0 - 2026-08-26
+
+- Added a cross-platform Avalonia external overlay for macOS and Linux.
+- Added Windows x86 and x64 architecture-aware installers.
+- Added macOS Intel and Apple Silicon DMG/ZIP packages.
+- Added Linux x86_64 AppImage, DEB, RPM, and TAR packages.
+- Added native-runner parser probes and tag-driven GitHub Release automation.
+- Preserved the Windows-only CDP and host-window integration with documented platform boundaries.
+
 ## 1.3E - 2026-08-26
 
 - Added first-run, one-click configuration for the experimental in-page status row.
@@ -9,4 +18,3 @@
 - Replaced machine-specific assembly metadata with neutral release metadata.
 - Added deterministic, no-PDB release settings and source/release privacy scans.
 - Added privacy, security, license, and unofficial-project notices.
-

@@ -1,6 +1,13 @@
 #define MyAppName "Codex Token Overlay"
-#define MyAppDisplayVersion "1.3E"
-#define MyAppNumericVersion "1.3.0.0"
+#ifndef MyAppArch
+  #define MyAppArch "x64"
+#endif
+#ifndef MyAppDisplayVersion
+  #define MyAppDisplayVersion "1.4.0"
+#endif
+#ifndef MyAppNumericVersion
+  #define MyAppNumericVersion "1.4.0.0"
+#endif
 #define MyAppExeName "CodexTokenOverlay.exe"
 
 [Setup]
@@ -12,10 +19,12 @@ DefaultDirName={localappdata}\Programs\CodexTokenOverlay
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
+#if MyAppArch == "x64"
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
-OutputDir=..\dist
-OutputBaseFilename=CodexTokenOverlay-1.3E-Setup
+#endif
+OutputDir=..\dist\release
+OutputBaseFilename=CodexTokenOverlay-{#MyAppDisplayVersion}-windows-{#MyAppArch}-Setup
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern dynamic
@@ -34,7 +43,7 @@ InfoBeforeFile=..\PRIVACY.txt
 Name: "desktopicon"; Description: "创建桌面快捷方式 CODEX(tokenoverlay)"; GroupDescription: "快捷方式："; Flags: checkedonce
 
 [Files]
-Source: "..\dist\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\win-{#MyAppArch}\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\scripts\Start-CodexTokenOverlay.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\assets\Codex.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion

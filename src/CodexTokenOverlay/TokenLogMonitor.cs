@@ -19,6 +19,8 @@ internal sealed class TokenLogMonitor : IDisposable
 
 	private readonly ModelContextWindowResolver _contextWindowResolver;
 
+	private readonly bool _allowNonDesktopSessions;
+
 	private readonly FileSystemWatcher? _watcher;
 
 	private readonly ConcurrentQueue<string> _changedPaths = new ConcurrentQueue<string>();
@@ -43,9 +45,10 @@ internal sealed class TokenLogMonitor : IDisposable
 
 	public bool PinActiveSession { get; set; }
 
-	public TokenLogMonitor(string? sessionRoot = null)
+	public TokenLogMonitor(string? sessionRoot = null, bool allowNonDesktopSessions = false)
 	{
 		_sessionRoot = sessionRoot ?? SessionPathResolver.Resolve();
+		_allowNonDesktopSessions = allowNonDesktopSessions;
 		_contextWindowResolver = new ModelContextWindowResolver(_sessionRoot);
 		if (Directory.Exists(_sessionRoot))
 		{
@@ -227,12 +230,26 @@ internal sealed class TokenLogMonitor : IDisposable
 				_rootSessionCache[path] = false;
 				return false;
 			}
-			if (!value3.TryGetProperty("originator", out var value4) || value4.ValueKind != JsonValueKind.String || !string.Equals(value4.GetString(), "Codex Desktop", StringComparison.OrdinalIgnoreCase))
+			string? originator = value3.TryGetProperty("originator", out var value4) && value4.ValueKind == JsonValueKind.String
+				? value4.GetString()
+				: null;
+			string? source = value3.TryGetProperty("source", out var value5) && value5.ValueKind == JsonValueKind.String
+				? value5.GetString()
+				: null;
+			bool desktopSession = string.Equals(originator, "Codex Desktop", StringComparison.OrdinalIgnoreCase)
+				&& string.Equals(source, "vscode", StringComparison.OrdinalIgnoreCase);
+			bool portableRootSession = _allowNonDesktopSessions
+				&& !string.IsNullOrWhiteSpace(originator)
+				&& !originator.Contains("subagent", StringComparison.OrdinalIgnoreCase)
+				&& (!value3.TryGetProperty("parent_thread_id", out var parentThreadId)
+					|| parentThreadId.ValueKind == JsonValueKind.Null
+					|| (parentThreadId.ValueKind == JsonValueKind.String && string.IsNullOrWhiteSpace(parentThreadId.GetString())));
+			if (!desktopSession && !portableRootSession)
 			{
 				_rootSessionCache[path] = false;
 				return false;
 			}
-			bool flag = value3.TryGetProperty("source", out var value5) && value5.ValueKind == JsonValueKind.String && string.Equals(value5.GetString(), "vscode", StringComparison.OrdinalIgnoreCase);
+			bool flag = desktopSession || portableRootSession;
 			_rootSessionCache[path] = flag;
 			return flag;
 		}

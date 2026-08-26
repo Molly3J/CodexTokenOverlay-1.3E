@@ -1,12 +1,11 @@
-CodexTokenOverlay 1.3E - Privacy Notice
+CodexTokenOverlay 1.4.0 - Privacy Notice
 
-CodexTokenOverlay runs locally on Windows. It reads local Codex session JSONL files from CODEX_HOME\sessions or the default .codex\sessions directory to calculate the values shown in the status row.
+CodexTokenOverlay runs locally on Windows, macOS, and Linux. It reads local Codex session JSONL files from CODEX_HOME/sessions or the default .codex/sessions directory to calculate the values shown in the status overlay.
 
-The application does not include an analytics or telemetry upload feature. It writes local settings, launch reports, diagnostics, model-context cache data, and timestamped settings backups under %LOCALAPPDATA%\CodexTokenOverlay.
+The application does not include analytics or telemetry upload. It may write local settings, launch reports, diagnostics, model-context cache data, and timestamped settings backups in the operating system's per-user local application-data directory.
 
-The experimental in-page backend opens a loopback Electron Chrome DevTools Protocol (CDP) endpoint. Other processes running in the same Windows user session may be able to access that endpoint. Do not enable in-page mode on a managed or high-risk computer unless you accept this local-debugging exposure.
+When local Codex authentication and provider configuration are available, the model-context resolver may request model metadata from the configured provider or the official ChatGPT Codex model endpoint. It does not upload prompts or session-log contents as part of that request. Codex itself continues to use the network according to the user's OpenAI/Codex configuration.
 
-Codex itself continues to use the network according to the user's OpenAI/Codex configuration. This project does not change those account or network policies.
+The Windows experimental in-page backend opens a loopback Electron Chrome DevTools Protocol (CDP) endpoint. Other processes running in the same Windows user session may be able to access that endpoint. Do not enable in-page mode on a managed or high-risk computer unless you accept this local-debugging exposure. The macOS and Linux packages use only the external overlay and do not open or require CDP.
 
-Uninstalling the application removes installed program files and shortcuts. Per-user settings and diagnostics are retained so upgrades and reinstallations can preserve preferences; users may remove %LOCALAPPDATA%\CodexTokenOverlay manually after uninstalling.
-
+Uninstalling a packaged application removes installed program files and shortcuts. Per-user settings and diagnostics may be retained so upgrades and reinstallations can preserve preferences; users may remove the CodexTokenOverlay directory from their per-user local application-data directory manually.

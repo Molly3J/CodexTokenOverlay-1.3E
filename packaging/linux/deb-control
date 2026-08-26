@@ -1,0 +1,8 @@
+Package: codex-token-overlay
+Version: @VERSION@
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: CodexTokenOverlay contributors
+Description: Cross-platform external token overlay for Codex sessions
+ Reads local Codex JSONL session logs and displays token and context metrics.

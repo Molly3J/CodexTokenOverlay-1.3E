@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Codex Token Overlay
+Comment=Cross-platform external token overlay for Codex sessions
+Exec=codex-token-overlay
+Icon=codex-token-overlay
+Terminal=false
+Categories=Utility;Development;

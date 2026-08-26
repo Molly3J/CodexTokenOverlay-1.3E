@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -185,7 +186,7 @@ internal sealed class ModelContextWindowResolver
 		request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
 		request.Headers.TryAddWithoutValidation("ChatGPT-Account-Id", accountId);
 		request.Headers.TryAddWithoutValidation("originator", "codex_cli_rs");
-		request.Headers.TryAddWithoutValidation("User-Agent", "codex_cli_rs/0.0.0 (Windows 10; x86_64)");
+		request.Headers.TryAddWithoutValidation("User-Agent", BuildUserAgent());
 		request.Headers.TryAddWithoutValidation("Accept", "application/json");
 		request.Headers.TryAddWithoutValidation("x-codex-beta-features", "apps");
 
@@ -441,6 +442,19 @@ internal sealed class ModelContextWindowResolver
 		}
 		string[] parts = version.Split('.', StringSplitOptions.RemoveEmptyEntries);
 		return parts.Length >= 3 ? string.Join('.', parts, 0, 3) : version;
+	}
+
+	private static string BuildUserAgent()
+	{
+		string platform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+			? "Windows"
+			: RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+				? "macOS"
+				: RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+					? "Linux"
+					: "Unknown";
+		string architecture = RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant();
+		return $"codex_cli_rs/0.0.0 ({platform}; {architecture})";
 	}
 
 	private static string? GetString(JsonElement element, string propertyName)
